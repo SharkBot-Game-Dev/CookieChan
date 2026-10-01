@@ -12,8 +12,6 @@ import (
 	"github.com/SharkBot-Game-Dev/CookieChan/models"
 
 	"strconv"
-
-	"time"
 )
 
 var BuyCommand = discord.SlashCommandCreate{
@@ -34,9 +32,11 @@ var BuyCommand = discord.SlashCommandCreate{
 }
 
 func BuyCommandExecute(interaction events.ApplicationCommandInteractionCreate, client bot.Client) bool {
-	client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
+	if err := client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
 		Type: discord.InteractionResponseTypeDeferredCreateMessage,
-	})
+	}); err != nil {
+		return true
+	}
 
 	var cookieUser models.CookieGameUser
 
@@ -46,7 +46,7 @@ func BuyCommandExecute(interaction events.ApplicationCommandInteractionCreate, c
 		count = 1
 	}
 
-	if count < 0 {
+	if count < 1 {
 		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "1以上を指定してください。"})
 		return true
 	}
@@ -62,47 +62,18 @@ func BuyCommandExecute(interaction events.ApplicationCommandInteractionCreate, c
 		return true
 	}
 
-	cookieUserResult := consts.DB.First(&cookieUser, "user_id = ?", interaction.User().ID.String())
-	if errors.Is(cookieUserResult.Error, gorm.ErrRecordNotFound) {
-		if cookieUserResult.Error != nil {
-			client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "まだクッキーがありません。\nまずは、/clickを実行してみましょう！"})
-			return true
+	err := purchaseCookies(consts.DB, interaction.User().ID.String(), item, count, &cookieUser)
+	if err != nil {
+		content := "内部DBエラーが発生しました。"
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			content = "まだクッキーがありません。\nまずは、/clickを実行してみましょう！"
 		}
-	} else {
-		if cookieUserResult.Error != nil {
-			client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "内部DBエラーが発生しました。"})
-			return true
+		if errors.Is(err, errInsufficientCookies) {
+			content = "お金が足りません。\nあなたは" + strconv.Itoa(cookieUser.CookieCount) + "クッキーまでのアイテムを購入できます。"
 		}
-	}
-
-	if cookieUser.CookieCount < (item.Price * count) {
-		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "お金が足りません。\nあなたは" + strconv.Itoa(cookieUser.CookieCount) + "クッキーまでのアイテムを購入できます。"})
+		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: content})
 		return true
 	}
-
-	updated := false
-	nowItems := cookieUser.Items
-
-	for itemI, itemNow := range nowItems {
-		if itemNow.ItemId == item.ID {
-			itemCopyNow := itemNow
-			itemCopyNow.Count += count
-			nowItems[itemI] = itemCopyNow
-			updated = true
-			break
-		}
-	}
-
-	if !updated {
-		nowItems = append(nowItems, models.CookieGameItem{
-			UserId:    interaction.User().ID.String(),
-			ItemId:    item.ID,
-			Count:     count,
-			CreatedAt: time.Now(),
-		})
-	}
-
-	consts.DB.Model(&cookieUserResult).Update("items", nowItems)
 
 	helpEmbed := discord.Embed{
 		Title: "アイテムを購入しました。",

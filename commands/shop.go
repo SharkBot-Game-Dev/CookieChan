@@ -16,9 +16,11 @@ var ShopCommand = discord.SlashCommandCreate{
 }
 
 func ShopCommandExecute(interaction events.ApplicationCommandInteractionCreate, client bot.Client) bool {
-	client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
+	if err := client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
 		Type: discord.InteractionResponseTypeDeferredCreateMessage,
-	})
+	}); err != nil {
+		return true
+	}
 
 	Fields := []discord.EmbedField{}
 

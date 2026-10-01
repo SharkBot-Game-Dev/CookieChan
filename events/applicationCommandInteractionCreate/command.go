@@ -18,5 +18,10 @@ func CommandEvent(e *events.ApplicationCommandInteractionCreate) {
 		return
 	}
 
-	commands.CommandExecutes[e.Data.CommandName()](*e, *e.Client())
+	execute, ok := commands.CommandExecutes[e.Data.CommandName()]
+	if !ok {
+		e.Client().Rest.CreateInteractionResponse(e.ID(), e.Token(), discord.InteractionResponse{Type: discord.InteractionResponseTypeCreateMessage, Data: discord.MessageCreate{Content: "このコマンドは現在利用できません。", Flags: discord.MessageFlagEphemeral}})
+		return
+	}
+	execute(*e, *e.Client())
 }

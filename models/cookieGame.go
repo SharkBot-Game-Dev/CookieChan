@@ -7,8 +7,8 @@ type CookieGameUser struct {
 	CreatedAt    time.Time               `json:"created_at"`
 	UserId       string                  `gorm:"not null;uniqueIndex" json:"user_id"`
 	CookieCount  int                     `json:"cookie_count"`
-	Achievements []CookieGameAchievement `gorm:"foreignKey:UserId" json:"achievements"`
-	Items        []CookieGameItem        `gorm:"foreignKey:UserId" json:"items"`
+	Achievements []CookieGameAchievement `gorm:"foreignKey:UserId;references:UserId" json:"achievements"`
+	Items        []CookieGameItem        `gorm:"foreignKey:UserId;references:UserId" json:"items"`
 }
 
 type CookieGameAchievement struct {

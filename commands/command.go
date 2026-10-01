@@ -12,6 +12,8 @@ var Commands = []discord.SlashCommandCreate{}
 var CommandExecutes = make(map[string]CommandExecute)
 
 func InitCommand() {
+	Commands = nil
+	CommandExecutes = make(map[string]CommandExecute)
 	Commands = append(Commands, HelpCommand)
 	CommandExecutes[HelpCommand.Name] = HelpCommandExecute
 

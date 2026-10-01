@@ -14,9 +14,11 @@ var HelpCommand = discord.SlashCommandCreate{
 }
 
 func HelpCommandExecute(interaction events.ApplicationCommandInteractionCreate, client bot.Client) bool {
-	client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
+	if err := client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
 		Type: discord.InteractionResponseTypeDeferredCreateMessage,
-	})
+	}); err != nil {
+		return true
+	}
 
 	helpEmbed := discord.Embed{
 		Title:       "クッキーちゃんの使い方",

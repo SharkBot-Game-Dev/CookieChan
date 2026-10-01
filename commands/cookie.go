@@ -27,9 +27,11 @@ var CookieCommand = discord.SlashCommandCreate{
 }
 
 func CookieCommandExecute(interaction events.ApplicationCommandInteractionCreate, client bot.Client) bool {
-	client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
+	if err := client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
 		Type: discord.InteractionResponseTypeDeferredCreateMessage,
-	})
+	}); err != nil {
+		return true
+	}
 
 	var cookieUser models.CookieGameUser
 
@@ -38,7 +40,7 @@ func CookieCommandExecute(interaction events.ApplicationCommandInteractionCreate
 		user = interaction.User()
 	}
 
-	cookieUserResult := consts.DB.First(&cookieUser, "user_id = ?", user.ID.String())
+	cookieUserResult := consts.DB.Preload("Achievements").Preload("Items").First(&cookieUser, "user_id = ?", user.ID.String())
 	if errors.Is(cookieUserResult.Error, gorm.ErrRecordNotFound) {
 		if cookieUserResult.Error != nil {
 			client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "そのユーザーはクッキーを持っていません。"})
@@ -55,7 +57,9 @@ func CookieCommandExecute(interaction events.ApplicationCommandInteractionCreate
 	for _, achievement := range cookieUser.Achievements {
 		if achievement.Achieved {
 			achievemntSt := consts.AchievementIdToStruct(achievement.AchievementID)
-			achievementText += (achievemntSt.Name + "\n")
+			if achievemntSt != nil {
+				achievementText += achievemntSt.Name + "\n"
+			}
 		}
 	}
 	if achievementText == "" {
@@ -64,17 +68,23 @@ func CookieCommandExecute(interaction events.ApplicationCommandInteractionCreate
 
 	itemText := ""
 	for _, item := range cookieUser.Items {
-		if item.Count <= 0 {
+		if item.Count > 0 {
 			itemSt := consts.ItemIdToStruct(item.ItemId)
-			itemText += (itemSt.Name + " (" + strconv.Itoa(item.Count) + "個)" + "\n")
+			if itemSt != nil {
+				itemText += itemSt.Name + " (" + strconv.Itoa(item.Count) + "個)\n"
+			}
 		}
 	}
 	if itemText == "" {
 		itemText = "まだ入手していません。"
 	}
 
+	displayName := user.Username
+	if user.GlobalName != nil && *user.GlobalName != "" {
+		displayName = *user.GlobalName
+	}
 	helpEmbed := discord.Embed{
-		Title: "😆" + *user.GlobalName + "のステータス",
+		Title: "😆" + displayName + "のステータス",
 		Color: consts.CookieColor,
 		Fields: []discord.EmbedField{
 			{

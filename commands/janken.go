@@ -17,22 +17,17 @@ var JankenCommand = discord.SlashCommandCreate{
 }
 
 func JankenCommandExecute(interaction events.ApplicationCommandInteractionCreate, client bot.Client) bool {
-	client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
+	if err := client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
 		Type: discord.InteractionResponseTypeDeferredCreateMessage,
-	})
-
-	if cache.JankenSessions[interaction.User().ID] == interaction.Channel().ID() {
-		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{
-			Content: "ゲームを始めたばっかりだよ！\nぐー、ちょき、ぱーのどれかを入力してね！",
-		})
+	}); err != nil {
 		return true
 	}
 
-	cache.JankenSessions[interaction.User().ID] = interaction.Channel().ID()
-
 	answers := []string{"ぐー", "ちょき", "ぱー"}
-
-	cache.JankenAnswer[interaction.User().ID] = answers[rand.Intn(len(answers))]
+	if !cache.StartJanken(interaction.User().ID, interaction.Channel().ID(), answers[rand.Intn(len(answers))]) {
+		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "ゲームを始めたばっかりだよ！\nぐー、ちょき、ぱーのどれかを入力してね！"})
+		return true
+	}
 
 	helpEmbed := discord.Embed{
 		Title:       "じゃんけん！",

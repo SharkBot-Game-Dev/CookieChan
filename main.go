@@ -26,7 +26,7 @@ var DSN = ""
 
 func Env_load() {
 	err := godotenv.Load()
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		log.Fatal("Error loading .env file")
 	}
 
@@ -61,6 +61,10 @@ func main() {
 		bot.WithEventListenerFunc(events.ApplicationCommandInteractionCreate),
 	)
 
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer client.Close(context.Background())
 	commands.InitCommand()
 
 	if SYNC_SLASH {
@@ -68,14 +72,13 @@ func main() {
 		for i, command := range commands.Commands {
 			applicationCommands[i] = command
 		}
-		client.Rest.SetGlobalCommands(DISCORD_CLIENT_ID, applicationCommands)
+		if _, err := client.Rest.SetGlobalCommands(DISCORD_CLIENT_ID, applicationCommands); err != nil {
+			log.Fatal(err)
+		}
 
 		log.Print("スラッシュコマンドを同期しました。")
 	}
 
-	if err != nil {
-		panic(err)
-	}
 	if err = client.OpenGateway(context.TODO()); err != nil {
 		panic(err)
 	}

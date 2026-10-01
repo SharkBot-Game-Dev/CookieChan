@@ -35,9 +35,9 @@ func determineWinner(userChoice, computerChoice string) string {
 }
 
 func JankenMessageCreate(e *events.MessageCreate) {
-	// log.Print(cache.JankenSessions)
-
-	if cache.JankenSessions[e.Message.Author.ID] != e.ChannelID {
+	valid := slices.Contains([]string{"ぐー", "ちょき", "ぱー"}, e.Message.Content)
+	answer, active := cache.PlayJanken(e.Message.Author.ID, e.ChannelID, valid)
+	if !active {
 		return
 	}
 
@@ -46,8 +46,6 @@ func JankenMessageCreate(e *events.MessageCreate) {
 		return
 	}
 
-	e.Client().Rest.CreateMessage(e.ChannelID, discord.MessageCreate{Content: "結果は" + determineWinner(e.Message.Content, cache.JankenAnswer[e.Message.Author.ID]) + "だよ！\nまた遊んでね！"})
+	e.Client().Rest.CreateMessage(e.ChannelID, discord.MessageCreate{Content: "結果は" + determineWinner(e.Message.Content, answer) + "だよ！\nまた遊んでね！"})
 
-	delete(cache.JankenSessions, e.Message.Author.ID)
-	delete(cache.JankenAnswer, e.Message.Author.ID)
 }
