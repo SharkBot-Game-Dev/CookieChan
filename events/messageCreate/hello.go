@@ -20,4 +20,15 @@ func HelloMessageCreate(e *events.MessageCreate) {
 		e.Client().Rest.CreateMessage(e.ChannelID, discord.MessageCreate{Content: randomGoodMorning[rand.Intn(len(randomGoodMorning))]})
 		return
 	}
+
+	if strings.Contains(e.Message.Content, "こんば") {
+		randomGoodMorning := []string{"こんばんは！", "こんばんは～！", "こんばんは～", "こんばんは～\nまだ起きてるの？"}
+		e.Client().Rest.CreateMessage(e.ChannelID, discord.MessageCreate{Content: randomGoodMorning[rand.Intn(len(randomGoodMorning))]})
+		return
+	}
+
+	if strings.Contains(e.Message.Content, "挨拶を無効化") {
+		e.Client().Rest.CreateMessage(e.ChannelID, discord.MessageCreate{Content: "挨拶を無効化したいチャンネルを、\nクッキーちゃんが表示できなくすると、\n無効化できるよ！"})
+		return
+	}
 }

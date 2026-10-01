@@ -13,4 +13,7 @@ var CommandExecutes = make(map[string]CommandExecute)
 func InitCommand() {
 	Commands = append(Commands, HelpCommand)
 	CommandExecutes[HelpCommand.Name] = HelpCommandExecute
+
+	Commands = append(Commands, JankenCommand)
+	CommandExecutes[JankenCommand.Name] = JankenCommandExecute
 }

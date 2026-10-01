@@ -11,4 +11,5 @@ func MessageCreate(e *events.MessageCreate) {
 	}
 
 	messageCreate.HelloMessageCreate(e)
+	messageCreate.JankenMessageCreate(e)
 }

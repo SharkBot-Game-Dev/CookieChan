@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"log"
-
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/discord"
 
@@ -26,12 +24,12 @@ func HelpCommandExecute(interaction discord.Interaction, client bot.Client) bool
 		Fields: []discord.EmbedField{
 			{
 				Name:   "基本コマンド",
-				Value:  "`/help`",
+				Value:  "`/help` `/janken`",
 				Inline: &consts.False,
 			},
 			{
 				Name:   "挨拶コマンド",
-				Value:  "`おはよう` `こんにちは`",
+				Value:  "`おはよう` `こんにちは` `こんばんは` `挨拶を無効化`",
 				Inline: &consts.False,
 			},
 		},
@@ -40,12 +38,10 @@ func HelpCommandExecute(interaction discord.Interaction, client bot.Client) bool
 		},
 	}
 
-	helpEmbed.AddField("挨拶コマンド", "`おはよう` `こんにちは`", false)
-
 	message := discord.MessageCreate{Embeds: []discord.Embed{helpEmbed}}
 
-	_, err := client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), message)
-	log.Print(err)
+	client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), message)
+	// log.Print(err)
 
 	return true
 }
