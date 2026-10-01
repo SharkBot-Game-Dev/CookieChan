@@ -19,9 +19,10 @@ var BuyCommand = discord.SlashCommandCreate{
 	Description: "アイテムをクッキーを使って購入します。",
 	Options: []discord.ApplicationCommandOption{
 		discord.ApplicationCommandOptionString{
-			Name:        "item",
-			Description: "購入するアイテム名",
-			Required:    true,
+			Name:         "item",
+			Description:  "購入するアイテム名",
+			Required:     true,
+			Autocomplete: true,
 		},
 		discord.ApplicationCommandOptionInt{
 			Name:        "count",

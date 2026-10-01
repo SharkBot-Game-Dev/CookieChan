@@ -2,6 +2,7 @@ package commands
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/discord"
@@ -55,6 +56,7 @@ func ClickCommandExecute(
 		},
 	)
 
+	unlockedNames := []string{}
 	for _, achievement := range consts.CookieAchievements {
 		if achievement.CookieCount > cookieCount {
 			continue
@@ -63,7 +65,10 @@ func ClickCommandExecute(
 		if err != nil || !unlocked {
 			continue
 		}
-		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "やったー！新しい実績を達成したよ！\n「" + achievement.Name + "」\n/cookieで確認してみてね！"})
+		unlockedNames = append(unlockedNames, "「"+achievement.Name+"」")
+	}
+	if len(unlockedNames) > 0 {
+		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "やったー！新しい実績を達成したよ！\n" + strings.Join(unlockedNames, "\n") + "\n/cookieで確認してみてね！"})
 	}
 	return true
 }

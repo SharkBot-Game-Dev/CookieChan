@@ -59,6 +59,7 @@ func main() {
 
 		bot.WithEventListenerFunc(events.MessageCreate),
 		bot.WithEventListenerFunc(events.ApplicationCommandInteractionCreate),
+		bot.WithEventListenerFunc(events.AutocompleteInteractionCreate),
 	)
 
 	if err != nil {
