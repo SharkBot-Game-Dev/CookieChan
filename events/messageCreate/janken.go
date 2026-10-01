@@ -1,7 +1,6 @@
 package messageCreate
 
 import (
-	"log"
 	"slices"
 
 	"github.com/SharkBot-Game-Dev/CookieChan/cache"
@@ -36,7 +35,7 @@ func determineWinner(userChoice, computerChoice string) string {
 }
 
 func JankenMessageCreate(e *events.MessageCreate) {
-	log.Print(cache.JankenSessions)
+	// log.Print(cache.JankenSessions)
 
 	if cache.JankenSessions[e.Message.Author.ID] != e.ChannelID {
 		return
