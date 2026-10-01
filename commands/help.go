@@ -24,7 +24,12 @@ func HelpCommandExecute(interaction discord.Interaction, client bot.Client) bool
 		Fields: []discord.EmbedField{
 			{
 				Name:   "基本コマンド",
-				Value:  "`/help` `/janken`",
+				Value:  "`/janken`",
+				Inline: &consts.False,
+			},
+			{
+				Name:   "ゲームコマンド",
+				Value:  "`/janken`",
 				Inline: &consts.False,
 			},
 			{
