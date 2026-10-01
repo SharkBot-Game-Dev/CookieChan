@@ -22,10 +22,10 @@ func InitCommand() {
 	CommandExecutes[CookieCommand.Name] = CookieCommandExecute
 
 	Commands = append(Commands, BuyCommand)
-	CommandExecutes[JankenCommand.Name] = BuyCommandExecute
+	CommandExecutes[BuyCommand.Name] = BuyCommandExecute
 
 	Commands = append(Commands, ShopCommand)
-	CommandExecutes[JankenCommand.Name] = ShopCommandExecute
+	CommandExecutes[ShopCommand.Name] = ShopCommandExecute
 
 	Commands = append(Commands, ClickCommand)
 	CommandExecutes[ClickCommand.Name] = ClickCommandExecute

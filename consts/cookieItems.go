@@ -12,7 +12,7 @@ var CookieItems = []CookieItem{
 	{
 		Name:        "ダブルクリック",
 		Description: "通常のクリックに加えて1回クリックできるようにします。",
-		Price:       10,
+		Price:       5,
 		ID:          "double_click",
 		ClickCount:  1,
 	},
