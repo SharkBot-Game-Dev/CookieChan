@@ -28,5 +28,5 @@ func InitCommand() {
 	CommandExecutes[JankenCommand.Name] = ShopCommandExecute
 
 	Commands = append(Commands, ClickCommand)
-	CommandExecutes[JankenCommand.Name] = ClickCommandExecute
+	CommandExecutes[ClickCommand.Name] = ClickCommandExecute
 }

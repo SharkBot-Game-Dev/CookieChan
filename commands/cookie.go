@@ -38,7 +38,7 @@ func CookieCommandExecute(interaction events.ApplicationCommandInteractionCreate
 		user = interaction.User()
 	}
 
-	cookieUserResult := consts.DB.First(cookieUser, "user_id = ?", user.ID.String())
+	cookieUserResult := consts.DB.First(&cookieUser, "user_id = ?", user.ID.String())
 	if errors.Is(cookieUserResult.Error, gorm.ErrRecordNotFound) {
 		if cookieUserResult.Error != nil {
 			client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "そのユーザーはクッキーを持っていません。"})
@@ -58,6 +58,9 @@ func CookieCommandExecute(interaction events.ApplicationCommandInteractionCreate
 			achievementText += (achievemntSt.Name + "\n")
 		}
 	}
+	if achievementText == "" {
+		achievementText = "まだ入手していません。"
+	}
 
 	itemText := ""
 	for _, item := range cookieUser.Items {
@@ -65,6 +68,9 @@ func CookieCommandExecute(interaction events.ApplicationCommandInteractionCreate
 			itemSt := consts.ItemIdToStruct(item.ItemId)
 			itemText += (itemSt.Name + " (" + strconv.Itoa(item.Count) + "個)" + "\n")
 		}
+	}
+	if itemText == "" {
+		itemText = "まだ入手していません。"
 	}
 
 	helpEmbed := discord.Embed{

@@ -62,7 +62,7 @@ func BuyCommandExecute(interaction events.ApplicationCommandInteractionCreate, c
 		return true
 	}
 
-	cookieUserResult := consts.DB.First(cookieUser, "user_id = ?", interaction.User().ID.String())
+	cookieUserResult := consts.DB.First(&cookieUser, "user_id = ?", interaction.User().ID.String())
 	if errors.Is(cookieUserResult.Error, gorm.ErrRecordNotFound) {
 		if cookieUserResult.Error != nil {
 			client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "まだクッキーがありません。\nまずは、/clickを実行してみましょう！"})
