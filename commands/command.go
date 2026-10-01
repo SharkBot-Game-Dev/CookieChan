@@ -31,4 +31,7 @@ func InitCommand() {
 
 	Commands = append(Commands, ClickCommand)
 	CommandExecutes[ClickCommand.Name] = ClickCommandExecute
+
+	Commands = append(Commands, VoteCommand)
+	CommandExecutes[VoteCommand.Name] = VoteCommandExecute
 }
