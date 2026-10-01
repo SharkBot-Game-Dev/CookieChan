@@ -5,6 +5,7 @@ import (
 
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/discord"
+	"github.com/disgoorg/disgo/events"
 
 	"github.com/SharkBot-Game-Dev/CookieChan/cache"
 	"github.com/SharkBot-Game-Dev/CookieChan/consts"
@@ -15,7 +16,7 @@ var JankenCommand = discord.SlashCommandCreate{
 	Description: "私とじゃんけんするよ！",
 }
 
-func JankenCommandExecute(interaction discord.Interaction, client bot.Client) bool {
+func JankenCommandExecute(interaction events.ApplicationCommandInteractionCreate, client bot.Client) bool {
 	client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
 		Type: discord.InteractionResponseTypeDeferredCreateMessage,
 	})

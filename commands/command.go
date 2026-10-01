@@ -3,9 +3,10 @@ package commands
 import (
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/discord"
+	"github.com/disgoorg/disgo/events"
 )
 
-type CommandExecute func(discord.Interaction, bot.Client) bool
+type CommandExecute func(events.ApplicationCommandInteractionCreate, bot.Client) bool
 
 var Commands = []discord.SlashCommandCreate{}
 var CommandExecutes = make(map[string]CommandExecute)
@@ -16,4 +17,16 @@ func InitCommand() {
 
 	Commands = append(Commands, JankenCommand)
 	CommandExecutes[JankenCommand.Name] = JankenCommandExecute
+
+	Commands = append(Commands, CookieCommand)
+	CommandExecutes[CookieCommand.Name] = CookieCommandExecute
+
+	Commands = append(Commands, BuyCommand)
+	CommandExecutes[JankenCommand.Name] = BuyCommandExecute
+
+	Commands = append(Commands, ShopCommand)
+	CommandExecutes[JankenCommand.Name] = ShopCommandExecute
+
+	Commands = append(Commands, ClickCommand)
+	CommandExecutes[JankenCommand.Name] = ClickCommandExecute
 }

@@ -15,12 +15,14 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/SharkBot-Game-Dev/CookieChan/commands"
+	"github.com/SharkBot-Game-Dev/CookieChan/consts"
 	"github.com/SharkBot-Game-Dev/CookieChan/events"
 )
 
 var DISCORD_TOKEN = ""
 var DISCORD_CLIENT_ID snowflake.ID
 var SYNC_SLASH = false
+var DSN = ""
 
 func Env_load() {
 	err := godotenv.Load()
@@ -34,6 +36,13 @@ func Env_load() {
 		log.Fatal("Error parsing DISCORD_CLIENT_ID")
 	}
 	SYNC_SLASH = os.Getenv("SYNC_SLASH") == "1"
+
+	DSN = os.Getenv("DSN")
+	if DSN == "" {
+		log.Fatal("Error not found DSN")
+	}
+
+	consts.ConnectDB(DSN)
 }
 
 func main() {
@@ -49,7 +58,7 @@ func main() {
 		),
 
 		bot.WithEventListenerFunc(events.MessageCreate),
-		bot.WithEventListenerFunc(events.InteractionCreate),
+		bot.WithEventListenerFunc(events.ApplicationCommandInteractionCreate),
 	)
 
 	commands.InitCommand()

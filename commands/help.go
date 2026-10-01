@@ -3,6 +3,7 @@ package commands
 import (
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/discord"
+	"github.com/disgoorg/disgo/events"
 
 	"github.com/SharkBot-Game-Dev/CookieChan/consts"
 )
@@ -12,7 +13,7 @@ var HelpCommand = discord.SlashCommandCreate{
 	Description: "このBotの使い方を表示します。",
 }
 
-func HelpCommandExecute(interaction discord.Interaction, client bot.Client) bool {
+func HelpCommandExecute(interaction events.ApplicationCommandInteractionCreate, client bot.Client) bool {
 	client.Rest.CreateInteractionResponse(interaction.ID(), interaction.Token(), discord.InteractionResponse{
 		Type: discord.InteractionResponseTypeDeferredCreateMessage,
 	})
