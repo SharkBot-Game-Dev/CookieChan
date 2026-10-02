@@ -40,4 +40,7 @@ func InitCommand() {
 
 	Commands = append(Commands, OmikujiCommand)
 	CommandExecutes[OmikujiCommand.Name] = OmikujiCommandExecute
+
+	Commands = append(Commands, AboutCommand)
+	CommandExecutes[AboutCommand.Name] = AboutCommandExecute
 }
