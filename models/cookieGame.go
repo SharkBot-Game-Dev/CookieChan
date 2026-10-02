@@ -3,12 +3,13 @@ package models
 import "time"
 
 type CookieGameUser struct {
-	ID           uint                    `gorm:"primaryKey" json:"id"`
-	CreatedAt    time.Time               `json:"created_at"`
-	UserId       string                  `gorm:"not null;uniqueIndex" json:"user_id"`
-	CookieCount  int                     `json:"cookie_count"`
-	Achievements []CookieGameAchievement `gorm:"foreignKey:UserId;references:UserId" json:"achievements"`
-	Items        []CookieGameItem        `gorm:"foreignKey:UserId;references:UserId" json:"items"`
+	ID            uint                    `gorm:"primaryKey" json:"id"`
+	CreatedAt     time.Time               `json:"created_at"`
+	UserId        string                  `gorm:"not null;uniqueIndex" json:"user_id"`
+	CookieCount   int                     `json:"cookie_count"`
+	ClickCooldown time.Time               `json:"click_cooldown"`
+	Achievements  []CookieGameAchievement `gorm:"foreignKey:UserId;references:UserId" json:"achievements"`
+	Items         []CookieGameItem        `gorm:"foreignKey:UserId;references:UserId" json:"items"`
 }
 
 type CookieGameAchievement struct {

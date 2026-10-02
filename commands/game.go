@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"math"
+	"time"
 
 	"github.com/SharkBot-Game-Dev/CookieChan/consts"
 	"github.com/SharkBot-Game-Dev/CookieChan/models"
@@ -13,6 +14,9 @@ import (
 var errInsufficientCookies = errors.New("insufficient cookies")
 var errInvalidPurchase = errors.New("invalid purchase")
 var errCookieOverflow = errors.New("cookie count overflow")
+var errClickCooldown = errors.New("click cooldown active")
+
+const clickCooldown = 10 * time.Minute
 
 // Lock the user for every balance/inventory change so concurrent commands serialize.
 func purchaseCookies(db *gorm.DB, userID string, item *consts.CookieItem, count int, user *models.CookieGameUser) error {
@@ -58,6 +62,10 @@ func clickCookies(db *gorm.DB, userID string) (user models.CookieGameUser, gain 
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&user, "user_id = ?", userID).Error; err != nil {
 			return err
 		}
+		now := time.Now()
+		if now.Before(user.ClickCooldown) {
+			return errClickCooldown
+		}
 		var items []models.CookieGameItem
 		if err := tx.Where("user_id = ?", userID).Find(&items).Error; err != nil {
 			return err
@@ -76,7 +84,11 @@ func clickCookies(db *gorm.DB, userID string) (user models.CookieGameUser, gain 
 			return errCookieOverflow
 		}
 		user.CookieCount += gain
-		return tx.Model(&user).Update("cookie_count", user.CookieCount).Error
+		user.ClickCooldown = now.Add(clickCooldown)
+		return tx.Model(&user).Updates(map[string]any{
+			"cookie_count":   user.CookieCount,
+			"click_cooldown": user.ClickCooldown,
+		}).Error
 	})
 	return
 }

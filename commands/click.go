@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 
@@ -33,6 +34,12 @@ func ClickCommandExecute(
 	userID := interaction.User().ID.String()
 
 	cookieUser, clickCount, err := clickCookies(consts.DB, userID)
+	if errors.Is(err, errClickCooldown) {
+		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{
+			Content: "クッキーのクリックは10分に1回できます。\n次は<t:" + strconv.FormatInt(cookieUser.ClickCooldown.Unix(), 10) + ":R>にクリックできます。",
+		})
+		return true
+	}
 	if err != nil {
 		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{Content: "内部DBエラーが発生しました。"})
 		return true
