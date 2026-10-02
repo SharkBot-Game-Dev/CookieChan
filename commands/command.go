@@ -23,6 +23,9 @@ func InitCommand() {
 	Commands = append(Commands, CookieCommand)
 	CommandExecutes[CookieCommand.Name] = CookieCommandExecute
 
+	Commands = append(Commands, LeaderboardCommand)
+	CommandExecutes[LeaderboardCommand.Name] = LeaderboardCommandExecute
+
 	Commands = append(Commands, BuyCommand)
 	CommandExecutes[BuyCommand.Name] = BuyCommandExecute
 
