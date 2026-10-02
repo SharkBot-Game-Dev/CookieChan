@@ -32,17 +32,12 @@ func HelpCommandExecute(interaction events.ApplicationCommandInteractionCreate, 
 			},
 			{
 				Name:   "🎮ゲーム",
-				Value:  "`/janken` `/vote`",
+				Value:  "`/vote`",
 				Inline: &consts.False,
 			},
 			{
 				Name:   "🍪クッキーゲーム",
 				Value:  "`/cookie` `/click` `/buy` `/shop`",
-				Inline: &consts.False,
-			},
-			{
-				Name:   "👋挨拶",
-				Value:  "`おはよう` `こんにちは` `こんばんは` `挨拶を無効化`",
 				Inline: &consts.False,
 			},
 		},

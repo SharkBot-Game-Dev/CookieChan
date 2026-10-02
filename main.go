@@ -52,12 +52,12 @@ func main() {
 		bot.WithGatewayConfigOpts(
 			gateway.WithIntents(
 				gateway.IntentGuilds,
-				gateway.IntentGuildMessages,
-				gateway.IntentMessageContent,
+				// gateway.IntentGuildMessages,
+				// gateway.IntentMessageContent,
 			),
 		),
 
-		bot.WithEventListenerFunc(events.MessageCreate),
+		// bot.WithEventListenerFunc(events.MessageCreate),
 		bot.WithEventListenerFunc(events.ApplicationCommandInteractionCreate),
 		bot.WithEventListenerFunc(events.AutocompleteInteractionCreate),
 	)

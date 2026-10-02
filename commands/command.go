@@ -17,8 +17,8 @@ func InitCommand() {
 	Commands = append(Commands, HelpCommand)
 	CommandExecutes[HelpCommand.Name] = HelpCommandExecute
 
-	Commands = append(Commands, JankenCommand)
-	CommandExecutes[JankenCommand.Name] = JankenCommandExecute
+	// Commands = append(Commands, JankenCommand)
+	// CommandExecutes[JankenCommand.Name] = JankenCommandExecute
 
 	Commands = append(Commands, CookieCommand)
 	CommandExecutes[CookieCommand.Name] = CookieCommandExecute
