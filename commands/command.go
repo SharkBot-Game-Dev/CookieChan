@@ -37,4 +37,7 @@ func InitCommand() {
 
 	Commands = append(Commands, VoteCommand)
 	CommandExecutes[VoteCommand.Name] = VoteCommandExecute
+
+	Commands = append(Commands, OmikujiCommand)
+	CommandExecutes[OmikujiCommand.Name] = OmikujiCommandExecute
 }

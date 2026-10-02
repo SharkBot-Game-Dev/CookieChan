@@ -27,12 +27,12 @@ func HelpCommandExecute(interaction events.ApplicationCommandInteractionCreate, 
 		Fields: []discord.EmbedField{
 			{
 				Name:   "🤖基本",
-				Value:  "`/help`",
+				Value:  "`/help` `/about`",
 				Inline: &consts.False,
 			},
 			{
 				Name:   "🎮ゲーム",
-				Value:  "`/vote`",
+				Value:  "`/vote` `/omikuji`",
 				Inline: &consts.False,
 			},
 			{
