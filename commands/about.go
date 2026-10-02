@@ -36,6 +36,11 @@ func AboutCommandExecute(
 				Name:  "バージョン",
 				Value: "v1.0.1",
 			},
+			{
+				Name:   "利用規約など",
+				Value:  "[利用規約](https://github.com/SharkBot-Game-Dev/CookieChan/blob/main/TERMS.md)  [プライバシーポリシー](https://github.com/SharkBot-Game-Dev/CookieChan/blob/main/PRIVACY.md)",
+				Inline: &consts.False,
+			},
 		},
 	}
 
