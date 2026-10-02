@@ -26,22 +26,22 @@ func HelpCommandExecute(interaction events.ApplicationCommandInteractionCreate, 
 		Color:       consts.CookieColor,
 		Fields: []discord.EmbedField{
 			{
-				Name:   "基本",
+				Name:   "🤖基本",
 				Value:  "`/help`",
 				Inline: &consts.False,
 			},
 			{
-				Name:   "ゲーム",
-				Value:  "`/janken`",
+				Name:   "🎮ゲーム",
+				Value:  "`/janken` `/vote`",
 				Inline: &consts.False,
 			},
 			{
-				Name:   "クッキーゲーム",
+				Name:   "🍪クッキーゲーム",
 				Value:  "`/cookie` `/click` `/buy` `/shop`",
 				Inline: &consts.False,
 			},
 			{
-				Name:   "挨拶",
+				Name:   "👋挨拶",
 				Value:  "`おはよう` `こんにちは` `こんばんは` `挨拶を無効化`",
 				Inline: &consts.False,
 			},
