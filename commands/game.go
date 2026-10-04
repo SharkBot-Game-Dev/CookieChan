@@ -16,7 +16,7 @@ var errInvalidPurchase = errors.New("invalid purchase")
 var errCookieOverflow = errors.New("cookie count overflow")
 var errClickCooldown = errors.New("click cooldown active")
 
-const clickCooldown = 10 * time.Minute
+const clickCooldown = 5 * time.Minute
 
 // Lock the user for every balance/inventory change so concurrent commands serialize.
 func purchaseCookies(db *gorm.DB, userID string, item *consts.CookieItem, count int, user *models.CookieGameUser) error {
