@@ -36,7 +36,7 @@ func ClickCommandExecute(
 	cookieUser, clickCount, err := clickCookies(consts.DB, userID)
 	if errors.Is(err, errClickCooldown) {
 		client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), discord.MessageCreate{
-			Content: "クッキーのクリックは10分に1回できます。\n次は<t:" + strconv.FormatInt(cookieUser.ClickCooldown.Unix(), 10) + ":R>にクリックできます。",
+			Content: "クッキーのクリックは5分に1回できます。\n次は<t:" + strconv.FormatInt(cookieUser.ClickCooldown.Unix(), 10) + ":R>にクリックできます。",
 		})
 		return true
 	}
