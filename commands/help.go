@@ -36,6 +36,11 @@ func HelpCommandExecute(interaction events.ApplicationCommandInteractionCreate, 
 				Inline: &consts.False,
 			},
 			{
+				Name:   "👾ゲーム",
+				Value:  "`/omikuji`",
+				Inline: &consts.False,
+			},
+			{
 				Name:   "🍪クッキーゲーム",
 				Value:  "`/cookie` `/click` `/buy` `/shop` `/leaderboard`",
 				Inline: &consts.False,
