@@ -29,7 +29,7 @@ func OmikujiCommandExecute(
 		return true
 	}
 
-	omikuji := []string{"大吉", "中吉", "小吉", "吉", "末吉", "凶"}
+	omikuji := []string{"大吉", "中吉", "小吉", "吉", "末吉", "凶", "クッキー吉", "チョコ吉", "光吉", "大凶"}
 
 	index := rand.Intn(len(omikuji))
 

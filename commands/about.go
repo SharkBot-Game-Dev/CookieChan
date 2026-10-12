@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"strconv"
+
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/discord"
 	"github.com/disgoorg/disgo/events"
@@ -27,7 +29,7 @@ func AboutCommandExecute(
 		return true
 	}
 
-	omikujiEmbed := discord.Embed{
+	aboutEmbed1 := discord.Embed{
 		Title:       "🤖クッキーちゃんについて",
 		Description: "クッキーちゃんは、便利な多機能Botです。",
 		Color:       consts.CookieColor,
@@ -44,11 +46,21 @@ func AboutCommandExecute(
 		},
 	}
 
+	aboutEmbed2 := discord.Embed{
+		Color: consts.CookieColor,
+		Fields: []discord.EmbedField{
+			{
+				Name:  "サーバー数",
+				Value: strconv.Itoa(client.Caches.GuildsLen()) + "サーバー",
+			},
+		},
+	}
+
 	client.Rest.CreateFollowupMessage(
 		client.ApplicationID,
 		interaction.Token(),
 		discord.MessageCreate{
-			Embeds: []discord.Embed{omikujiEmbed},
+			Embeds: []discord.Embed{aboutEmbed1, aboutEmbed2},
 		},
 	)
 	return true

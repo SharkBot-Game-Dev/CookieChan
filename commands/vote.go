@@ -107,13 +107,13 @@ func VoteCommandExecute(interaction events.ApplicationCommandInteractionCreate, 
 		}
 	}
 
-	helpEmbed := discord.Embed{
+	voteEmbed := discord.Embed{
 		Title:       title,
 		Color:       consts.CookieColor,
 		Description: description,
 	}
 
-	message := discord.MessageCreate{Embeds: []discord.Embed{helpEmbed}}
+	message := discord.MessageCreate{Embeds: []discord.Embed{voteEmbed}}
 
 	followUpMessage, followUpErr := client.Rest.CreateFollowupMessage(client.ApplicationID, interaction.Token(), message)
 	// log.Print(err)
@@ -126,8 +126,9 @@ func VoteCommandExecute(interaction events.ApplicationCommandInteractionCreate, 
 		client.Rest.AddReaction(interaction.Channel().ID(), followUpMessage.ID, "🇧")
 	} else if len(options) == 1 {
 		client.Rest.AddReaction(interaction.Channel().ID(), followUpMessage.ID, "👍")
+		client.Rest.AddReaction(interaction.Channel().ID(), followUpMessage.ID, "👎")
 	} else {
-		for count, _ := range options {
+		for count := range options {
 			client.Rest.AddReaction(interaction.Channel().ID(), followUpMessage.ID, number_emoji_map[count+1])
 		}
 	}

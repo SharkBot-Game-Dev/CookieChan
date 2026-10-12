@@ -31,8 +31,8 @@ func HelpCommandExecute(interaction events.ApplicationCommandInteractionCreate, 
 				Inline: &consts.False,
 			},
 			{
-				Name:   "🎮ゲーム",
-				Value:  "`/vote` `/omikuji`",
+				Name:   "🛠️ツール",
+				Value:  "`/vote` `/embed`",
 				Inline: &consts.False,
 			},
 			{

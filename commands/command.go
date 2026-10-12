@@ -43,4 +43,7 @@ func InitCommand() {
 
 	Commands = append(Commands, AboutCommand)
 	CommandExecutes[AboutCommand.Name] = AboutCommandExecute
+
+	Commands = append(Commands, EmbedCommand)
+	CommandExecutes[EmbedCommand.Name] = EmbedCommandExecute
 }
