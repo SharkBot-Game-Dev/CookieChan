@@ -36,7 +36,7 @@ func AboutCommandExecute(
 		Fields: []discord.EmbedField{
 			{
 				Name:  "バージョン",
-				Value: "v1.0.1",
+				Value: "v1.0.2",
 			},
 			{
 				Name:   "利用規約など",
